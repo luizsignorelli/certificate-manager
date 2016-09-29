@@ -33,11 +33,6 @@ class CertificateController extends Controller
 	}
 
     public function newCertificate(Request $request) {
-		/*
-			TODO:
-			Find a way to create the fucking certificate file... And load the location on the variable accordingly.
-		*/
-
 		$requestName = $request['name'] . '.csr';
 		$certName = $request['name'] . '.cer';
 		$keyName = $request['name'] . '.pem';
@@ -53,6 +48,10 @@ class CertificateController extends Controller
 		);
 
 		$cert_file = CertificateController::generateCertificate($data);
+
+		Storage::disk('certs')->put($requestName, $cert_file['csr']);
+		Storage::disk('certs')->put($certName, $cert_file['crt']);
+		Storage::disk('certs')->put($keyName, $cert_file['key']);
 
 		$certificate = new Certificate();
 
@@ -71,32 +70,45 @@ class CertificateController extends Controller
 		$certificate->key = $cert_file['key'];
 
 		$certificate->save();
-
-		Storage::disk('certs')->put($requestName, $cert_file['csr']);
-		Storage::disk('certs')->put($certName, $cert_file['crt']);
-		Storage::disk('certs')->put($keyName, $cert_file['key']);
-
+		
 		return view('new_certificate', ['callback' => $cert_file]);
     }
 
     public function importCertificate(Request $request) {
-    	/*
-    		TODO:
-    		Find a way to read the fucking certificate file, and grab the information we need to save it...
-    	*/
+    	$certName = $request['name'] . '.cer';
+		$keyName = $request['name'] . '.pem';
 
-    	$cert_file = $request['cert_file'];
-    	$cert_name = $request['cert_name'];
-    	$cert_pass = $request['cert_pass'];
+		$cert_file = file_get_contents(request()->file('cert_file'));
+		$key_file = file_get_contents(request()->file('key_file'));
 
-    	$certificate = new Certificate();
+		if (openssl_x509_check_private_key($cert_file, $key_file)) {
 
-    	$certificate->location = $cert_file;
-    	$certificate->name = $cert_name;
-    	$certificate->password = $cert_pass;
+			Storage::disk('certs')->put($certName, $cert_file);
+			Storage::disk('certs')->put($keyName, $key_file);
 
-    	$certificate->save();
+			$certProperties = openssl_x509_parse($cert_file);
 
-    	return redirect()->back();
+			$certificate = new Certificate();
+
+			$certificate->name = $request['name'];
+			$certificate->password = $request['password'] == '' ? null : $request['password'];
+			$certificate->country = array_key_exists("C", $certProperties['subject']) == false ? 'BR' : $certProperties['subject']['C'];
+			$certificate->state = array_key_exists("ST", $certProperties['subject']) == false ? 'preencher' : $certProperties['subject']['ST'];
+			$certificate->city = array_key_exists("L", $certProperties['subject']) == false ? 'preencher' : $certProperties['subject']['L'];
+			$certificate->organization = array_key_exists("O", $certProperties['subject']) == false ? 'preencher' : $certProperties['subject']['O'];
+			$certificate->organization_unit = array_key_exists("OU", $certProperties['subject']) == false ? 'preencher' : $certProperties['subject']['OU'];
+			$certificate->common_name = $certProperties['subject']['CN'];
+			$certificate->expiration = date("Y-m-d H:i:s", $certProperties['validTo_time_t']);
+			$certificate->csr = null;
+			$certificate->crt = $cert_file;
+			$certificate->key = $key_file;
+
+			$certificate->save();
+
+			return view('import_certificate', ['callback' => ['ok' => 'Certificado importado com sucesso!']]);
+		}
+		else {
+			return view('import_certificate', ['callback' => ['error' => 'O certificado e a chave não batem']]);
+		}
     }
 }
