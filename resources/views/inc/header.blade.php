@@ -11,10 +11,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ações <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="/import-cert">Importar certificado</a></li>
-							<li><a href="/import-key">Importar chave</a></li>
-							<li role="separator" class="divider"></li>
 							<li><a href="/new-cert">Criar certificado</a></li>
-							<li><a href="/new-key">Criar chave</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="/show-certs">Listar certificados</a></li>
 						</ul>
