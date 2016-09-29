@@ -26,7 +26,7 @@ class CreateCertsTable extends Migration
             $table->string('organization_unit');
             $table->string('common_name');
             $table->timestamp('expiration');
-            $table->longText('csr');
+            $table->longText('csr')->nullable();
             $table->longText('crt');
             $table->longText('key');
             $table->longText('ca')->nullable();
