@@ -19,16 +19,8 @@ Route::get('/import-cert', function () {
     return view('import_certificate');
 });
 
-Route::get('/import-key', function () {
-    return view('import_key');
-});
-
 Route::get('/new-cert', function () {
     return view('new_certificate');
-});
-
-Route::get('/new-key', function () {
-    return view('new_key');
 });
 
 Route::get('/show-certs', function () {
