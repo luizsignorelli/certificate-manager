@@ -111,4 +111,28 @@ class CertificateController extends Controller
 			return view('import_certificate', ['callback' => ['error' => 'O certificado e a chave não batem']]);
 		}
     }
+
+    public function exportCertificate(Request $request) {
+    	
+    }
+
+    public function showCertificates() {
+    	$certificates = Certificate::all();
+
+    	$callback = [];
+
+    	foreach ($certificates as $k => $certificate) {
+    		$callback[$k]['id'] = $certificate->id;
+    		$callback[$k]['name'] = $certificate->name;
+    		$callback[$k]['country'] = $certificate->country;
+    		$callback[$k]['state'] = $certificate->state;
+    		$callback[$k]['city'] = $certificate->city;
+    		$callback[$k]['organization'] = $certificate->organization;
+    		$callback[$k]['organization_unit'] = $certificate->organization_unit;
+    		$callback[$k]['common_name'] = $certificate->common_name;
+    		$callback[$k]['expiration'] = $certificate->expiration;
+    	}
+
+    	return view('show_certs', ['callback' => $callback]);
+    }
 }
