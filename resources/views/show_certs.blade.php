@@ -28,22 +28,24 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Zupme</td>
-									<td>BR</td>
-									<td>Minas Gerais</td>
-									<td>Uberlândia</td>
-									<td>ZUP INTERNET SERVER LTDA</td>
-									<td>Infra</td>
-									<td>*.api.zup.me</td>
-									<td>Oct 15 23:59:59 2017 GMT</td>
-								</tr>
+								@foreach ($callback as $certificate)
+								    <tr>
+								    	<td>{{ $certificate['id'] }}</td>
+								    	<td>{{ $certificate['name'] }}</td>
+								    	<td>{{ $certificate['country'] }}</td>
+								    	<td>{{ $certificate['state'] }}</td>
+								    	<td>{{ $certificate['city'] }}</td>
+								    	<td>{{ $certificate['organization'] }}</td>
+								    	<td>{{ $certificate['organization_unit'] }}</td>
+								    	<td>{{ $certificate['common_name'] }}</td>
+								    	<td>{{ $certificate['expiration'] }}</td>
+								    </tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 @endsection
