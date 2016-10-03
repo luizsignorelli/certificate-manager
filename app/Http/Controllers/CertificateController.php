@@ -32,7 +32,27 @@ class CertificateController extends Controller
 		return $output;
 	}
 
-    public function newCertificate(Request $request) {
+	public static function showCertificates() {
+		$data = Certificate::all();
+
+		$certificates = [];
+
+		foreach ($data as $k => $certificate) {
+			$certificates[$k]['id'] = $certificate->id;
+			$certificates[$k]['name'] = $certificate->name;
+			$certificates[$k]['country'] = $certificate->country;
+			$certificates[$k]['state'] = $certificate->state;
+			$certificates[$k]['city'] = $certificate->city;
+			$certificates[$k]['organization'] = $certificate->organization;
+			$certificates[$k]['organization_unit'] = $certificate->organization_unit;
+			$certificates[$k]['common_name'] = $certificate->common_name;
+			$certificates[$k]['expiration'] = $certificate->expiration;
+		}
+
+		return $certificates;
+    }
+
+	public function newCertificate(Request $request) {
 		$requestName = $request['name'] . '.csr';
 		$certName = $request['name'] . '.cer';
 		$keyName = $request['name'] . '.pem';
@@ -58,6 +78,7 @@ class CertificateController extends Controller
 		$certificate->name = $request['name'];
 		$certificate->email = $request['email'];
 		$certificate->password = $request['password'] == '' ? null : $request['password'];
+		$certificate->location = storage_path('app/certificates/' . $certName);
 		$certificate->country = $request['country'];
 		$certificate->state = $request['state'];
 		$certificate->city = $request['city'];
@@ -92,6 +113,7 @@ class CertificateController extends Controller
 
 			$certificate->name = $request['name'];
 			$certificate->password = $request['password'] == '' ? null : $request['password'];
+			$certificate->location = storage_path('app/certificates/' . $certName);
 			$certificate->country = array_key_exists("C", $certProperties['subject']) == false ? 'BR' : $certProperties['subject']['C'];
 			$certificate->state = array_key_exists("ST", $certProperties['subject']) == false ? 'preencher' : $certProperties['subject']['ST'];
 			$certificate->city = array_key_exists("L", $certProperties['subject']) == false ? 'preencher' : $certProperties['subject']['L'];
@@ -113,26 +135,21 @@ class CertificateController extends Controller
     }
 
     public function exportCertificate(Request $request) {
-    	
-    }
 
-    public static function showCertificates() {
-    	$data = Certificate::all();
+    	$certificates = Certificate::where('id', $request->certificate)->get();
 
-    	$certificates = [];
+    	foreach ($certificates as $certificate) {
+    		$certFileLocation = storage_path('app/certificates/' . $certificate->name . '.cer');
+    		$certFileName = $certificate->name . '.crt';
+    		$keyFileLocation = storage_path('app/certificates/' . $certificate->name . '.pem');
+    		$keyFileName = $certificate->name . '.key';
 
-    	foreach ($data as $k => $certificate) {
-    		$certificates[$k]['id'] = $certificate->id;
-    		$certificates[$k]['name'] = $certificate->name;
-    		$certificates[$k]['country'] = $certificate->country;
-    		$certificates[$k]['state'] = $certificate->state;
-    		$certificates[$k]['city'] = $certificate->city;
-    		$certificates[$k]['organization'] = $certificate->organization;
-    		$certificates[$k]['organization_unit'] = $certificate->organization_unit;
-    		$certificates[$k]['common_name'] = $certificate->common_name;
-    		$certificates[$k]['expiration'] = $certificate->expiration;
+    		$connection = ssh2_connect($request->host, 22);
+    		ssh2_auth_password($connection, $request->username, $request->password);
+    		ssh2_scp_send($connection, $certFileLocation, $request->destination . $certFileName, 0644);
+    		ssh2_scp_send($connection, $keyFileLocation, $request->destination . $keyFileName, 0644);
     	}
 
-    	return $certificates;
+    	return view('export_certificate', ['callback' => ['ok' => 'Certificado exportado com sucesso!']]);
     }
 }
