@@ -151,6 +151,13 @@ class CertificateController extends Controller
     }
 
     public function exportCertificate(Request $request) {
+    	$this->validate($request,[
+			'certificate' => 'required',
+			'username' => 'required',
+			'password' => 'required',
+			'host' => 'required',
+			'destination' => 'required'
+		]);
 
     	$certificates = Certificate::where('id', $request->certificate)->get();
 
