@@ -31,6 +31,26 @@ Route::get('/show-certs', function(){
     return view('show_certs');
 });
 
+Route::get('api/certificate/{certificate}', function (App\Certificate $certificate) {
+    /*
+        TODO:
+        Use the this route within default middleware for apis!!
+    */
+        
+    return $output = array(
+        'id' => $certificate->id,
+        'name' => $certificate->name,
+        'location' => $certificate->location,
+        'country' => $certificate->country,
+        'state' => $certificate->state,
+        'city' => $certificate->city,
+        'organization' => $certificate->organization,
+        'organization_unit' => $certificate->organization_unit,
+        'state' => $certificate->state,
+        'expiration' => $certificate->expiration
+    );
+});
+
 Route::post('/create-certificate', [
 	'uses' => 'CertificateController@newCertificate',
 	'as' => 'create_certificate'
