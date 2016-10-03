@@ -5,6 +5,15 @@
 @endsection
 
 @section('content')
+	@if (isset($callback['ok']))
+		<div class="alert alert-success" role="alert">
+			<a href="#" class="alert-link">{{ $callback['ok'] }}</a>
+		</div>
+	@elseif (isset($callback['error']))
+		<div class="alert alert-danger" role="alert">
+			<a href="#" class="alert-link"> {{ $callback['error'] }} </a>
+		</div>
+	@endif
 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">
@@ -31,11 +40,11 @@
 						</div>
 						<div class="form-group">
 							<label for="sshRemoteHost">Remote host</label>
-							<input type="password" name="password" class="form-control" id="sshRemoteHost" placeholder="IP do host">
+							<input type="text" name="host" class="form-control" id="sshRemoteHost" placeholder="IP do host">
 						</div>
 						<div class="form-group">
 							<label for="sshRemoteDestination">Remote destination folder</label>
-							<input type="password" name="password" class="form-control" id="sshRemoteDestination" placeholder="Caminho de destino">
+							<input type="text" name="destination" class="form-control" id="sshRemoteDestination" placeholder="Caminho de destino">
 						</div>
 						<input type="hidden" name="_token" value="{{ Session::token() }}">
 						<button type="submit" class="btn btn-primary">Enviar</button>
