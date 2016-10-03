@@ -15,7 +15,7 @@
 							<li role="separator" class="divider"></li>
 							<li><a href="/export-cert">Exportar certificado</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="/get-certs">Listar certificados</a></li>
+							<li><a href="/show-certs">Listar certificados</a></li>
 						</ul>
 					</li>
 				</ul>
