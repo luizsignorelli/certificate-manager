@@ -53,6 +53,16 @@ class CertificateController extends Controller
     }
 
 	public function newCertificate(Request $request) {
+		$this->validate($request,[
+			'name' => 'required|unique:certificates',
+			'country' => 'required',
+			'state' => 'required',
+			'city' => 'required',
+			'organization' => 'required',
+			'organization_unit' => 'required',
+			'common_name' => 'required'
+		]);
+
 		$requestName = $request['name'] . '.csr';
 		$certName = $request['name'] . '.cer';
 		$keyName = $request['name'] . '.pem';
@@ -96,12 +106,12 @@ class CertificateController extends Controller
     }
 
     public function importCertificate(Request $request) {
-    	$this->validate($request,[
-    		'cert_file' => 'required|file',
-    		'key_file' => 'required|file',
-    		'name' => 'required|unique:certificates'
-    	]);
-    	
+		$this->validate($request,[
+			'cert_file' => 'required|file',
+			'key_file' => 'required|file',
+			'name' => 'required|unique:certificates'
+		]);
+
     	$certName = $request['name'] . '.cer';
 		$keyName = $request['name'] . '.pem';
 
