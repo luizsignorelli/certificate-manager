@@ -1,3 +1,7 @@
+<!-- 
+	TODO:
+	Create a button per row to download the certificate and key.
+ -->
 @extends('layouts.app')
 
 @section('title')
