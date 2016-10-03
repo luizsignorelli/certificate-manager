@@ -14,6 +14,11 @@
                 <div class="panel-body">
                     <p>Aplicativo concebido com o propósito de gerenciar certificados. Isso é, importar certificados, criar certificados, exportar certficados para download ou copia-los direto para um host.</p>
                     <p>Além disso, o aplicativo deve de forma fácil exibir detalhes sobre os certificados e informar com antecedência quando os mesmos expiram.</p>
+                    <p>Depêndencias:</p>
+                    <ul>
+                        <li>php-pecl-ssh2</li>
+                        <li>openssl-devel</li>
+                    </ul>
                 </div>
             </div>
         </div>
