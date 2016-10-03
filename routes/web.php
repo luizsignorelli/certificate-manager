@@ -31,10 +31,6 @@ Route::get('/show-certs', function(){
     return view('show_certs');
 });
 
-Route::get('/get-certs', [
-    'uses' => 'CertificateController@showCertificates'
-]);
-
 Route::post('/create-certificate', [
 	'uses' => 'CertificateController@newCertificate',
 	'as' => 'create_certificate'
