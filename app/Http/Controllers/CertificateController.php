@@ -96,6 +96,12 @@ class CertificateController extends Controller
     }
 
     public function importCertificate(Request $request) {
+    	$this->validate($request,[
+    		'cert_file' => 'required|file',
+    		'key_file' => 'required|file',
+    		'name' => 'required|unique:certificates'
+    	]);
+    	
     	$certName = $request['name'] . '.cer';
 		$keyName = $request['name'] . '.pem';
 
