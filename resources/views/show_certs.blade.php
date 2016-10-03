@@ -28,7 +28,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($callback as $certificate)
+								@foreach (Certificates::showCertificates() as $certificate)
 								    <tr>
 								    	<td>{{ $certificate['id'] }}</td>
 								    	<td>{{ $certificate['name'] }}</td>
