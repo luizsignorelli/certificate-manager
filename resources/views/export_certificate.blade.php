@@ -14,6 +14,14 @@
 				<div class="panel-body">
 					<form action="{{route('export_certificate')}}" method="post">
 						<div class="form-group">
+							<label>Selecione o certificado:</label>
+							<select class="form-control" name="certificate">
+								@foreach (Certificates::showCertificates() as $key => $certificate)
+									<option value="{{ $certificate['id'] }}">{{ $certificate['name'] }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="form-group">
 							<label for="sshUserName">Nome de usuário</label>
 							<input type="text" name="username" class="form-control" id="sshUserName" placeholder="Usuário para SSH">
 						</div>
@@ -29,10 +37,11 @@
 							<label for="sshRemoteDestination">Remote destination folder</label>
 							<input type="password" name="password" class="form-control" id="sshRemoteDestination" placeholder="Caminho de destino">
 						</div>
-						<input type="hidden" name="_token" value="{{Session::token() }}">
+						<input type="hidden" name="_token" value="{{ Session::token() }}">
 						<button type="submit" class="btn btn-primary">Enviar</button>
 					</form>
 				</div>
 			</div>
 		</div>
+	</div>
 @endsection
