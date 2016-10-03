@@ -7,11 +7,11 @@
 @section('content')
 	@if (isset($callback['ok']))
 		<div class="alert alert-success" role="alert">
-		  <a href="#" class="alert-link">{{ $callback['ok'] }}</a>
+			<a href="#" class="alert-link">{{ $callback['ok'] }}</a>
 		</div>
 	@elseif (isset($callback['error']))
 		<div class="alert alert-danger" role="alert">
-		  <a href="#" class="alert-link"> {{ $callback['error'] }} </a>
+			<a href="#" class="alert-link"> {{ $callback['error'] }} </a>
 		</div>
 	@endif
 	<div class="row">
