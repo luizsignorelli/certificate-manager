@@ -24,23 +24,40 @@
 					<form action="{{route('import_certificate')}}" enctype="multipart/form-data" method="post">
 						<div class="row">
 							<div class="col-md-6">
-								<div class="form-group">
+								<div class="form-group {{ $errors->has('cert_file') ? 'has-error' : '' }}">
 									<label for="certFile">CRT input</label>
 									<input type="file" name="cert_file" id="certFile">
-									<p class="help-block">Selecione o certificado</p>
+									@if ($errors->has('cert_file'))
+										@foreach ($errors->get('cert_file') as $certError)
+											<p class="help-block">{{ $certError }}</p>
+										@endforeach
+									@else
+										<p class="help-block">Selecione a chave</p>
+									@endif
 								</div>
 							</div>
 							<div class="col-md-6">
-								<div class="form-group">
+								<div class="form-group {{ $errors->has('key_file') ? 'has-error' : '' }}">
 									<label for="certKey">KEY input</label>
 									<input type="file" name="key_file" id="certFile">
-									<p class="help-block">Selecione a chave</p>
+									@if ($errors->has('key_file'))
+										@foreach ($errors->get('key_file') as $keyError)
+											<p class="help-block">{{ $keyError }}</p>
+										@endforeach
+									@else
+										<p class="help-block">Selecione a chave</p>
+									@endif
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
 							<label for="certName">Nome do certificado</label>
 							<input type="text" name="name" class="form-control" id="certName" placeholder="Indentificador para o certificado">
+							@if ($errors->has('name'))
+								@foreach ($errors->get('name') as $nameError)
+									<p class="help-block">{{ $nameError }}</p>
+								@endforeach
+							@endif
 						</div>
 						<div class="form-group">
 							<label for="certPass">Senha do certificado</label>
@@ -52,4 +69,5 @@
 				</div>
 			</div>
 		</div>
+	</div>
 @endsection
