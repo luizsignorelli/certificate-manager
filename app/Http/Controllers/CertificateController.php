@@ -116,23 +116,23 @@ class CertificateController extends Controller
     	
     }
 
-    public function showCertificates() {
-    	$certificates = Certificate::all();
+    public static function showCertificates() {
+    	$data = Certificate::all();
 
-    	$callback = [];
+    	$certificates = [];
 
-    	foreach ($certificates as $k => $certificate) {
-    		$callback[$k]['id'] = $certificate->id;
-    		$callback[$k]['name'] = $certificate->name;
-    		$callback[$k]['country'] = $certificate->country;
-    		$callback[$k]['state'] = $certificate->state;
-    		$callback[$k]['city'] = $certificate->city;
-    		$callback[$k]['organization'] = $certificate->organization;
-    		$callback[$k]['organization_unit'] = $certificate->organization_unit;
-    		$callback[$k]['common_name'] = $certificate->common_name;
-    		$callback[$k]['expiration'] = $certificate->expiration;
+    	foreach ($data as $k => $certificate) {
+    		$certificates[$k]['id'] = $certificate->id;
+    		$certificates[$k]['name'] = $certificate->name;
+    		$certificates[$k]['country'] = $certificate->country;
+    		$certificates[$k]['state'] = $certificate->state;
+    		$certificates[$k]['city'] = $certificate->city;
+    		$certificates[$k]['organization'] = $certificate->organization;
+    		$certificates[$k]['organization_unit'] = $certificate->organization_unit;
+    		$certificates[$k]['common_name'] = $certificate->common_name;
+    		$certificates[$k]['expiration'] = $certificate->expiration;
     	}
 
-    	return view('show_certs', ['callback' => $callback]);
+    	return $certificates;
     }
 }
