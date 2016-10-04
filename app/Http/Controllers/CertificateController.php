@@ -22,14 +22,12 @@ class CertificateController extends Controller
 		openssl_pkey_export($privkey, $pkout, null, $configParams);
 		$expiration = openssl_x509_parse($certout);
 
-		$output = array(
+		return array(
 			"csr" => $csrout,
 			"crt" => $certout,
 			"key" => $pkout,
 			"expiration" => date("Y-m-d H:i:s", $expiration["validTo_time_t"])
 		);
-
-		return $output;
 	}
 
 	public static function showCertificates() {
