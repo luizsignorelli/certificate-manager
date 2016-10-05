@@ -1,5 +1,6 @@
 <?php
 
+use App\Notifications\CertificateExpiring;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +30,13 @@ Route::get('/new-cert', function () {
 
 Route::get('/show-certs', function(){
     return view('show_certs');
+});
+
+Route::get('/slack-notification', function(){
+    $certificate = App\Certificate::find(1);
+
+    $certificate->notify(new CertificateExpiring($certificate));
+    
 });
 
 Route::get('api/certificate/{certificate}', function (App\Certificate $certificate) {

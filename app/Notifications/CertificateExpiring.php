@@ -6,19 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 
 class CertificateExpiring extends Notification
 {
+    protected $certificate;
+
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(\App\Certificate $certificate)
     {
-        //
+        $this->certificate = $certificate;
     }
 
     /**
@@ -29,7 +27,7 @@ class CertificateExpiring extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['slack'];
     }
 
     /**
@@ -57,5 +55,24 @@ class CertificateExpiring extends Notification
         return [
             //
         ];
+    }
+
+    public function toSlack($notifiable) {
+        return (new SlackMessage)
+            ->from('Ghost', ':ghost:')
+            ->to('@eddfigueiredo')
+            ->success()
+            ->content('This is the slack message')
+            ->attachment(function($attachment){
+                $attachment->title('About to expire')
+                    ->fields([
+                        'Certificate' => $this->certificate->name,
+                        'Expire' => $this->certificate->expiration
+                    ]);
+            });
+    }
+
+    public function testing() {
+        print_r($this->certificate);
     }
 }
