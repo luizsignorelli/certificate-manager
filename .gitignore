@@ -1,7 +1,11 @@
 /node_modules
 /public/storage
 /vendor
-/storage
+/storage/logs
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+/storage/framework/app
 /.idea
 Homestead.json
 Homestead.yaml
