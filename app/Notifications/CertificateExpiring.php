@@ -62,17 +62,12 @@ class CertificateExpiring extends Notification
             ->from('Ghost', ':ghost:')
             ->to('@eddfigueiredo')
             ->success()
-            ->content('This is the slack message')
+            ->content('This certificate is about to expire, DO SOMETHING ABOUT IT')
             ->attachment(function($attachment){
-                $attachment->title('About to expire')
-                    ->fields([
-                        'Certificate' => $this->certificate->name,
-                        'Expire' => $this->certificate->expiration
-                    ]);
+                $attachment->fields([
+                    'Certificate' => $this->certificate->name,
+                    'Expire' => $this->certificate->expiration
+                ]);
             });
-    }
-
-    public function testing() {
-        print_r($this->certificate);
     }
 }
