@@ -31,8 +31,8 @@ In the root of the desired location:
 ```
 	$ composer install
 	$ php artisan key:generate
-	$ php artisan migrate
 	$ php artisan config:cache
+	$ php artisan migrate
 ```
 
 To start the development server
