@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\SendSlackNotificationAboutCertificateExpiration::class
     ];
 
     /**
@@ -29,18 +29,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         $schedule->call(function () {
-            $certificates = \App\Certificate::all();
-
-            foreach ($certificates as $key => $certificate) {
-                $expiration = date_create($certificate['expiration']);
-                $today = date_create("2016-10-07 16:10:00");
-                $diff = date_diff($today,$expiration);
-
-                if ($diff->format("%a") < 374) {
-                    $certificate->notify(new CertificateExpiring($certificate));
-                }
-            }  
-        })->everyTenMinutes();
+           $schedule->command('SendSlackNotificationAboutCertificateExpiration:send');
+        })->daily();
     }
 
     /**
