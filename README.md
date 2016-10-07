@@ -11,12 +11,32 @@ I don't have to mention that it will also be possible to export (download) a cer
 - php >= 5.3
 - composer
 - laravel >= 5.3.10
+- database engine MySQL or PostgreSQL (currently using MySQL in development)
+- libssl-dev (openssl-devel)
+- php-mysql
+- php-ssh2
 
 # How to use it
 Clone the repository in the desired location.
 
 In the root of the desired location:
 
+- Create a .env file based on the example.
+- Create directories:
+	- storage/framework
+	- storage/framework/cache
+	- storage/framework/sessions
+	- storage/framework/views
+
 ```
 	$ composer install
+	$ php artisan key:generate
+	$ php artisan migrate
+	$ php artisan config:cache
+```
+
+To start the development server
+
+```
+	$ php artisan serve
 ```
