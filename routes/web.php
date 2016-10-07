@@ -33,10 +33,21 @@ Route::get('/show-certs', function(){
 });
 
 Route::get('/slack-notification', function(){
-    $certificate = App\Certificate::find(1);
-
-    $certificate->notify(new CertificateExpiring($certificate));
+    /*
+        Just testing the functionality
+    */
     
+    $certificates = App\Certificate::all();
+    
+    foreach ($certificates as $key => $certificate) {
+        $expiration = date_create($certificate['expiration']);
+        $today = date_create("2016-10-07 16:10:00");
+        $diff = date_diff($today,$expiration);
+
+        if ($diff->format("%a") < 374) {
+           $certificate->notify(new CertificateExpiring($certificate));
+        }
+    }
 });
 
 Route::get('api/certificate/{certificate}', function (App\Certificate $certificate) {
