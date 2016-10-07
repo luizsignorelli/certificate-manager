@@ -45,7 +45,7 @@ class SendSlackNotificationAboutCertificateExpiration extends Command
             $today = date_create("now");
             $diff = date_diff($today,$expiration);
 
-            if ($diff->format("%a") < 374) {
+            if ($diff->format("%a") < 60) {
                 $certificate->notify(new CertificateExpiring($certificate));
             }
         } 
