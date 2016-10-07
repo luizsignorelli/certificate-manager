@@ -2,6 +2,7 @@
 /public/storage
 /vendor
 /storage/logs
+/storage/framework
 /storage/framework/cache
 /storage/framework/sessions
 /storage/framework/views
